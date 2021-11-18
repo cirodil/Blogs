@@ -14,13 +14,12 @@ const firebaseConfig = {
   storageBucket: "blog-719c5.appspot.com",
   messagingSenderId: "29483008191",
   appId: "1:29483008191:web:c60475b4e3ed486385060a",
-  measurementId: "G-XMVVGJWG27"
+  measurementId: "G-XMVVGJWG27",
 };
 
 // Initialize Firebase
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 
-
-export {timestamp};
+export { timestamp };
 export default firebaseApp.firestore();
