@@ -12,11 +12,12 @@
             type="file"
             ref="blogPhoto"
             id="blog-photo"
+            @change="fileChange"
             accept=".png, .jpg, .jpeg"
           />
           <button
             class="preview"
-            :class="{ 'button-inactive': !this.$store.state.blogPhotoFileUrl }"
+            :class="{ 'button-inactive': !this.$store.state.blogPhotoFileURL }"
           >
             Preview Photo
           </button>
@@ -47,6 +48,7 @@ export default {
   name: "CreatePost",
   data() {
     return {
+      file: null,
       error: null,
       errorMsg: null,
       editorSettings: {
@@ -55,6 +57,38 @@ export default {
         },
       },
     };
+  },
+  methods: {
+    fileChange() {
+      this.file = this.$refs.blogPhoto.files[0];
+      const fileName = this.file.name;
+      this.$store.commit("fileNameChange", fileName);
+      this.$store.commit("createFileURL", URL.createObjectURL(this.file));
+    },
+  },
+  computed: {
+    profileId() {
+      return this.$store.state.profileId;
+    },
+    blogCoverPhotoName() {
+      return this.$store.state.blogCoverPhotoName;
+    },
+    blogTitle: {
+      get() {
+        return this.$store.state.blogTitle;
+      },
+      set(payload) {
+        this.$store.commit("updateBlogTitle", payload);
+      },
+    },
+    blogHTML: {
+      get() {
+        return this.$store.state.blogHTML;
+      },
+      set(payload) {
+        this.$store.commit("newBlogPost", payload);
+      },
+    },
   },
 };
 </script>
