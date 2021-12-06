@@ -8,28 +8,6 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    sampleBlogCards: [
-      {
-        blogTitle: "Blog card #1",
-        blogCoverPhoto: "stock-1",
-        blogData: "May 1, 2021",
-      },
-      {
-        blogTitle: "Blog card #2",
-        blogCoverPhoto: "stock-2",
-        blogData: "May 1, 2021",
-      },
-      {
-        blogTitle: "Blog card #3",
-        blogCoverPhoto: "stock-3",
-        blogData: "May 1, 2021",
-      },
-      {
-        blogTitle: "Blog card #4",
-        blogCoverPhoto: "stock-4",
-        blogData: "May 1, 2021",
-      },
-    ],
     blogPosts: [],
     postLoaded: null,
     blogHTML: "Write your blog title here...",
@@ -126,7 +104,7 @@ export default new Vuex.Store({
       dbResults.forEach((doc) => {
         if (!state.blogPosts.some((post) => post.blogID === doc.id)) {
           const data = {
-            blogId: doc.data().blogID,
+            blogID: doc.data().blogID,
             blogHTML: doc.data().blogHTML,
             blogCoverPhoto: doc.data().blogCoverPhoto,
             blogTitle: doc.data().blogTitle,
@@ -136,7 +114,6 @@ export default new Vuex.Store({
         }
       });
       state.postLoaded = true;
-      console.log(state.blogPosts);
     },
     async updateUserSettings({ commit, state }) {
       const dataBase = db.collection("users").doc(state.profileId);
