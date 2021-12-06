@@ -30,6 +30,8 @@ export default new Vuex.Store({
         blogData: "May 1, 2021",
       },
     ],
+    blogPosts: [],
+    postLoaded: null,
     blogHTML: "Write your blog title here...",
     blogTitle: "",
     blogPhotoName: "",
@@ -44,6 +46,14 @@ export default new Vuex.Store({
     profileUsername: null,
     profileId: null,
     profileInitials: null,
+  },
+  getters: {
+    blogPostsFeed(state) {
+      return state.blogPosts.slice(0, 2);
+    },
+    blogPostsCards(state) {
+      return state.blogPosts.slice(2, 6);
+    },
   },
   mutations: {
     newBlogPost(state, payload) {
@@ -109,6 +119,24 @@ export default new Vuex.Store({
       const token = await user.getIdTokenResult();
       const admin = await token.claims.admin;
       commit("setProfileAdmin", admin);
+    },
+    async getPost({ state }) {
+      const dataBase = await db.collection("blogPosts").orderBy("date", "desc");
+      const dbResults = await dataBase.get();
+      dbResults.forEach((doc) => {
+        if (!state.blogPosts.some((post) => post.blogID === doc.id)) {
+          const data = {
+            blogId: doc.data().blogID,
+            blogHTML: doc.data().blogHTML,
+            blogCoverPhoto: doc.data().blogCoverPhoto,
+            blogTitle: doc.data().blogTitle,
+            blogDate: doc.data().date,
+          };
+          state.blogPosts.push(data);
+        }
+      });
+      state.postLoaded = true;
+      console.log(state.blogPosts);
     },
     async updateUserSettings({ commit, state }) {
       const dataBase = db.collection("users").doc(state.profileId);

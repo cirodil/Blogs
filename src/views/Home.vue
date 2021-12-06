@@ -3,7 +3,7 @@
     <BlogPost v-if="!user" :post="welcomeScreen" />
     <BlogPost
       :post="post"
-      v-for="(post, index) in sampleBlogPost"
+      v-for="(post, index) in blogPostsFeed"
       :key="index"
     />
     <div class="blog-card-wrap">
@@ -12,7 +12,7 @@
         <div class="blog-cards">
           <BlogCard
             :post="post"
-            v-for="(post, index) in sampleBlogCards"
+            v-for="(post, index) in blogPostsCards"
             :key="index"
           />
         </div>
@@ -36,14 +36,7 @@ import Arrow from "../assets/Icons/arrow-right-light.svg";
 export default {
   name: "Home",
   components: { BlogPost, BlogCard, Arrow },
-  computed: {
-    sampleBlogCards() {
-      return this.$store.state.sampleBlogCards;
-    },
-    user() {
-      return this.$store.state.user;
-    },
-  },
+
   data() {
     return {
       welcomeScreen: {
@@ -52,19 +45,18 @@ export default {
         welcomeScreen: true,
         photo: "coding",
       },
-      sampleBlogPost: [
-        {
-          title: "This is a Filler Title!",
-          blogHTML: "This is a filler blog post title!",
-          blogCoverPhoto: "beautiful-stories",
-        },
-        {
-          title: "This is a Filler Title!",
-          blogHTML: "This is a filler blog post title!",
-          blogCoverPhoto: "designed-for-everyone",
-        },
-      ],
     };
+  },
+  computed: {
+    blogPostsFeed() {
+      return this.$store.getters.blogPostsFeed;
+    },
+    blogPostsCards() {
+      return this.$store.getters.blogPostsCards;
+    },
+    user() {
+      return this.$store.state.user;
+    },
   },
 };
 </script>
