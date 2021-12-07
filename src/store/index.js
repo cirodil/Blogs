@@ -114,11 +114,16 @@ export default new Vuex.Store({
             blogCoverPhoto: doc.data().blogCoverPhoto,
             blogTitle: doc.data().blogTitle,
             blogDate: doc.data().date,
+            blogCoverPhotoName: doc.data().blogCoverPhotoName,
           };
           state.blogPosts.push(data);
         }
       });
       state.postLoaded = true;
+    },
+    async updatePost({ commit, dispatch }, payload) {
+      commit("filterBlogPost", payload);
+      await dispatch("getPost");
     },
     async deletePost({ commit }, payload) {
       const getPost = await db.collection("blogPosts").doc(payload);
